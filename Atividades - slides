@@ -1,0 +1,95 @@
+//Exercício 01//
+
+package main
+
+import (
+	"fmt"
+)
+
+func contarCaracteres(str string) map[rune]int {
+	ocorrencias := make(map[rune]int)
+
+	for _, char := range str {
+		ocorrencias[char]++
+	}
+
+	return ocorrencias
+}
+
+func main() {
+	str := "Hello, world!"
+	resultado := contarCaracteres(str)
+
+	for char, count := range resultado {
+		fmt.Printf("%c: %d\n", char, count)
+	}
+}
+
+//Exercício 02//
+
+package main
+
+import (
+	"fmt"
+)
+
+func calcularMediaAlunos(notasAlunos map[string][]float64) map[string]float64 {
+	medias := make(map[string]float64)
+
+	for aluno, notas := range notasAlunos {
+		total := 0.0
+		for _, nota := range notas {
+			total += nota
+		}
+		media := total / float64(len(notas))
+
+		medias[aluno] = media
+	}
+
+	return medias
+}
+
+func main() {
+	notasAlunos := map[string][]float64{
+		"João":   {8.5, 9.0, 7.5},
+		"Maria":  {6.0, 7.0, 8.0},
+		"Pedro":  {7.5, 8.0, 6.5},
+		"Carla":  {9.0, 9.5, 8.5},
+		"Marcos": {7.0, 7.5, 6.0},
+	}
+
+	medias := calcularMediaAlunos(notasAlunos)
+
+	for aluno, media := range medias {
+		fmt.Printf("%s: %.2f\n", aluno, media)
+	}
+}
+
+//Exercício 03//
+
+package main
+
+import "fmt"
+
+func removerDuplicatas(slice []int) []int {
+	valoresUnicos := make(map[int]bool)
+	sliceSemDuplicatas := []int{}
+
+	for _, valor := range slice {
+		if !valoresUnicos[valor] {
+			valoresUnicos[valor] = true
+			sliceSemDuplicatas = append(sliceSemDuplicatas, valor)
+		}
+	}
+
+	return sliceSemDuplicatas
+}
+
+func main() {
+	slice := []int{1, 2, 3, 4, 3, 2, 5, 6, 4, 7, 7, 8, 9, 9}
+
+	sliceSemDuplicatas := removerDuplicatas(slice)
+
+	fmt.Println("Slice original:", slice)
+	fmt.Println("Slice sem duplicatas:", sliceSemDuplicatas)
+}
