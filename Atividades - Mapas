@@ -1,0 +1,337 @@
+//Exercício 01//
+
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func contarPalavras(s string) map[string]int {
+	palavras := strings.Fields(s)
+	ocorrencias := make(map[string]int)
+
+	for _, palavra := range palavras {
+		ocorrencias[palavra]++
+	}
+
+	return ocorrencias
+}
+
+func main() {
+	texto := "O cachorro correu atrás do gato, mas o gato subiu na árvore."
+
+	resultado := contarPalavras(texto)
+
+	for palavra, ocorrencias := range resultado {
+		fmt.Printf("Palavra: %s - Ocorrências: %d\n", palavra, ocorrencias)
+	}
+}
+
+//Exercício 02//
+
+package main
+
+import (
+	"fmt"
+)
+
+func mergeMaps(map1, map2 map[string]string) map[string]string {
+	resultado := make(map[string]string)
+
+	for chave, valor := range map1 {
+		resultado[chave] = valor
+	}
+
+	for chave, valor := range map2 {
+		resultado[chave] = valor
+	}
+
+	return resultado
+}
+
+func main() {
+	map1 := map[string]string{
+		"chave1": "valor1",
+		"chave2": "valor2",
+	}
+
+	map2 := map[string]string{
+		"chave2": "novoValor",
+		"chave3": "valor3",
+	}
+
+	resultado := mergeMaps(map1, map2)
+
+	fmt.Println("Resultado:")
+	for chave, valor := range resultado {
+		fmt.Printf("%s: %s\n", chave, valor)
+	}
+}
+
+//Exercício 03//
+
+package main
+
+import "fmt"
+
+func somaValores(mapa map[string]int) int {
+	soma := 0
+
+	for _, valor := range mapa {
+		soma += valor
+	}
+
+	return soma
+}
+
+func main() {
+	mapa := map[string]int{
+		"valor1": 10,
+		"valor2": 20,
+		"valor3": 30,
+	}
+
+	resultado := somaValores(mapa)
+	fmt.Println("Soma dos valores:", resultado)
+}
+
+//Exercício 04//
+
+package main
+
+import (
+	"fmt"
+	"sort"
+	"strings"
+)
+
+func agrupaAnagramas(palavras []string) map[string][]string {
+	anagramas := make(map[string][]string)
+
+	for _, palavra := range palavras {
+		sorted := sortString(palavra)
+
+		anagramas[sorted] = append(anagramas[sorted], palavra)
+	}
+
+	return anagramas
+}
+
+func sortString(s string) string {
+	bytes := []byte(s)
+
+	sort.Slice(bytes, func(i, j int) bool {
+		return bytes[i] < bytes[j]
+	})
+
+	return string(bytes)
+}
+
+func main() {
+	palavras := []string{"amor", "roma", "carro", "arco", "mora", "casa", "soma"}
+
+	grupos := agrupaAnagramas(palavras)
+
+	for _, grupo := range grupos {
+		fmt.Println(grupo)
+	}
+}
+
+//Exercício 05//
+
+package main
+
+import "fmt"
+
+func contagemCaracteres(str string) map[rune]int {
+	contagem := make(map[rune]int)
+
+	for _, char := range str {
+		contagem[char]++
+	}
+
+	return contagem
+}
+
+func main() {
+	str := "abracadabra"
+
+	frequencia := contagemCaracteres(str)
+
+	for char, freq := range frequencia {
+		fmt.Printf("%c: %d\n", char, freq)
+	}
+}
+
+//Exercício 06//
+
+package main
+
+import "fmt"
+
+func somaContagens(contagens []map[string]int) map[string]int {
+	soma := make(map[string]int)
+
+	for _, contagem := range contagens {
+		for palavra, quantidade := range contagem {
+			soma[palavra] += quantidade
+		}
+	}
+
+	return soma
+}
+
+func main() {
+	contagens := []map[string]int{
+		{"hello": 2, "world": 1},
+		{"hello": 3, "go": 2},
+		{"world": 1, "golang": 4},
+	}
+
+	total := somaContagens(contagens)
+
+	for palavra, quantidade := range total {
+		fmt.Printf("%s: %d\n", palavra, quantidade)
+	}
+}
+
+//Exercício 07//
+
+package main
+
+import "fmt"
+
+func contarLetras(frase string) map[string]map[rune]int {
+	palavras := make(map[string]map[rune]int)
+
+	separador := func(c rune) bool {
+		return c == ' ' || c == ',' || c == '.'
+	}
+	palavrasSeparadas := strings.FieldsFunc(frase, separador)
+
+	for _, palavra := range palavrasSeparadas {
+		letras := make(map[rune]int)
+
+		for _, letra := range palavra {
+			letras[letra]++
+		}
+
+		palavras[palavra] = letras
+	}
+
+	return palavras
+}
+
+func main() {
+	frase := "A linguagem Go é incrível"
+
+	resultado := contarLetras(frase)
+
+	for palavra, contagem := range resultado {
+		fmt.Printf("%s: %v\n", palavra, contagem)
+	}
+}
+
+//Exercício 08//
+
+package main
+
+import (
+	"fmt"
+)
+
+func calcularContas(contas map[string]float64) map[string]float64 {
+	total := 0.0
+	quantidadePessoas := len(contas)
+
+	for _, valor := range contas {
+		total += valor
+	}
+
+	valorMedio := total / float64(quantidadePessoas)
+
+	resultado := make(map[string]float64)
+	for pessoa, valor := range contas {
+		resultado[pessoa] = valor - valorMedio
+	}
+
+	return resultado
+}
+
+func main() {
+	contas := map[string]float64{
+		"João":    100.0,
+		"Maria":   150.0,
+		"Carlos":  75.0,
+		"Ana":     120.0,
+		"Pedro":   90.0,
+		"Patrícia": 80.0,
+	}
+
+	resultado := calcularContas(contas)
+
+	for pessoa, valor := range resultado {
+		fmt.Printf("%s deve receber/pagar: R$ %.2f\n", pessoa, valor)
+	}
+}
+
+//Exercício 09//
+
+package main
+
+import (
+	"fmt"
+)
+
+func gerarFibonacci(n int) map[int]int {
+	fibonacci := make(map[int]int)
+
+	fibonacci[0] = 0
+	fibonacci[1] = 1
+
+	for i := 2; fibonacci[i-1] <= n; i++ {
+		fibonacci[i] = fibonacci[i-1] + fibonacci[i-2]
+	}
+
+	return fibonacci
+}
+
+func main() {
+	n := 100
+	fibonacci := gerarFibonacci(n)
+
+	for i, num := range fibonacci {
+		fmt.Printf("Fibonacci[%d] = %d\n", i, num)
+	}
+}
+
+//Exercício 10//
+
+package main
+
+import (
+	"fmt"
+)
+
+func contarPares(slice []int) map[[2]int]int {
+	pares := make(map[[2]int]int)
+
+	for i := 0; i < len(slice)-1; i++ {
+		for j := i + 1; j < len(slice); j++ {
+			pair := [2]int{slice[i], slice[j]}
+			pares[pair]++
+		}
+	}
+
+	return pares
+}
+
+func main() {
+	slice := []int{1, 2, 3, 4, 5, 1, 2, 3, 4, 5}
+	pares := contarPares(slice)
+
+	for pair, count := range pares {
+		fmt.Printf("%v: %d\n", pair, count)
+	}
+}
